@@ -1,0 +1,346 @@
+<!DOCTYPE html>  
+<html lang="id">  
+<head>  
+  <meta charset="UTF-8" />  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>  
+  <title>King Zamss</title>  
+  <style>  
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');  
+    body {  
+      margin: 0;  
+      padding: 30px 15px;  
+      font-family: 'Share Tech Mono', monospace;  
+      color: #e0e0e0;  
+      display: flex;  
+      flex-direction: column;  
+      align-items: center;  
+      min-height: 100vh;  
+      background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url("https://files.catbox.moe/wzezgc.jpg") no-repeat center/cover fixed;  
+      animation: fadeIn 1.5s ease-in;  
+    }  
+    @keyframes fadeIn {  
+      from { opacity: 0; transform: translateY(10px); }  
+      to { opacity: 1; transform: translateY(0); }  
+    }  
+    h1 {  
+      color: #f0f0f0;  
+      text-align: center;  
+      font-size: 2.5em;  
+      margin-bottom: 10px;  
+      text-shadow: 0 0 6px rgba(0,0,0,0.6);  
+      animation: textFade 2s ease-in-out;  
+    }  
+    @keyframes textFade {  
+      0% { opacity: 0; transform: translateY(-10px); }  
+      50% { opacity: 0.6; transform: translateY(2px); }  
+      100% { opacity: 1; transform: translateY(0); }  
+    }  
+    .thumbnail {  
+      width: 100%;  
+      max-width: 480px;  
+      aspect-ratio: 16/9;  
+      border-radius: 12px;  
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);  
+      margin: 20px 0;  
+      object-fit: cover;  
+      animation: floatThumb 6s ease-in-out infinite;  
+    }  
+    @keyframes floatThumb {  
+      0%, 100% { transform: translateY(0); }  
+      50% { transform: translateY(-8px); }  
+    }  
+    .section {  
+      display: flex;  
+      flex-direction: column;  
+      gap: 12px;  
+      width: 100%;  
+      max-width: 800px;  
+      margin-bottom: 40px;  
+    }  
+    .product-list {  
+      display: grid;  
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));  
+      gap: 20px;  
+      width: 100%;  
+      max-width: 900px;  
+    }  
+    .product-card {  
+      background: rgba(20,20,20,0.75);  
+      border: 1px solid rgba(255,255,255,0.15);  
+      border-radius: 15px;  
+      padding: 15px;  
+      box-shadow: 0 0 16px rgba(0,0,0,0.5);  
+      cursor: pointer;  
+      transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), background 0.35s ease, box-shadow 0.35s ease;  
+      text-align: center;  
+      position: relative;  
+      overflow: hidden;  
+    }  
+   .product-card::before {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      border-radius: 16px;
+      background: #39ff14;
+      filter: blur(25px);
+      opacity: 1;
+      z-index: -1;
+      animation: auraPulse 4s ease-in-out infinite;
+    }
+    @keyframes auraPulse {
+      0%, 100% { filter: blur(20px); }
+      50% { filter: blur(35px); }
+    }
+    .product-card:hover {  
+      background: rgba(40,40,40,0.85);  
+      transform: translateY(-6px) scale(1.03);  
+      box-shadow: 0 8px 20px rgba(0,0,0,0.7);  
+    }  
+    .product-title {  
+      font-size: 1.1em;  
+      font-weight: bold;  
+      color: #fff;  
+      margin: 8px 0;  
+      text-shadow: 0 0 6px rgba(0,0,0,0.7);  
+    }  
+    .price { font-size: 0.95em; margin: 6px 0; color: #e8e8e8; }  
+    .product-image {  
+      width: 100%;  
+      aspect-ratio: 1/1;  
+      object-fit: cover;  
+      border-radius: 10px;  
+      margin-bottom: 8px;  
+      box-shadow: 0 0 10px rgba(0,0,0,0.4);  
+      transition: transform 0.4s ease, box-shadow 0.4s ease;  
+    }  
+    .product-card:hover .product-image {  
+      transform: scale(1.03);  
+      box-shadow: 0 0 14px rgba(0,0,0,0.6);  
+    }  
+    .hint { font-size: 0.8em; color: #aaa; margin-top: 3px; }  
+    .product-card.active .hint::after { content: " ▲"; }  
+    .product-card:not(.active) .hint::after { content: " ▼"; }  
+    .product-detail {  
+      max-height: 0;  
+      overflow: hidden;  
+      margin-top: 6px;  
+      font-size: 0.85em;  
+      color: #b0b0b0;  
+      white-space: pre-line;  
+      line-height: 1.4;  
+      transition: max-height 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s ease;  
+      opacity: 0;  
+    }  
+    .product-card.active .product-detail {  
+      max-height: 350px;  
+      opacity: 1;  
+    }  
+    hr {  
+      width: 80%;  
+      border: none;  
+      height: 1px;  
+      background-color: rgba(255,255,255,0.2);  
+      margin: 30px 0;  
+    }  
+    .note { color: #ccc; font-size: 0.9em; text-align: center; }  
+    .contact-section {  
+      text-align: center;  
+      margin-top: 40px;  
+      padding: 20px;  
+      background: rgba(20,20,20,0.85);  
+      border-radius: 15px;  
+      box-shadow: 0 0 14px rgba(0,0,0,0.5);  
+    }  
+    .contact-section h2 {  
+      font-size: 1.5rem;  
+      margin-bottom: 15px;  
+      color: #fff;  
+    }  
+    .contact-links {  
+      display: flex;  
+      justify-content: center;  
+      gap: 15px;  
+      margin-top: 15px;  
+      flex-wrap: wrap;  
+    }  
+    .contact-btn {  
+      display: flex;  
+      align-items: center;  
+      gap: 8px;  
+      padding: 10px 18px;  
+      border-radius: 8px;  
+      font-weight: bold;  
+      text-decoration: none;  
+      color: #fff;  
+      transition: 0.3s;  
+      box-shadow: 0 0 12px rgba(0,0,0,0.4);  
+    }  
+    .contact-btn img { width: 20px; height: 20px; object-fit: contain; }  
+    .contact-btn:hover { opacity: 0.85; transform: scale(1.06); }  
+    .telegram { background-color: #0088cc; }  
+    .whatsapp { background-color: #25D366; }  
+    .dana { background-color: #0284fe; }  
+    .seabank { background-color: #f37321; }  
+    .qris { background-color: #d11c1c; }  
+    .toast {  
+      position: fixed;  
+      bottom: 30px;  
+      left: 50%;  
+      transform: translateX(-50%);  
+      background: rgba(0,0,0,0.85);  
+      color: #fff;  
+      padding: 10px 20px;  
+      border-radius: 8px;  
+      font-size: 0.9em;  
+      opacity: 0;  
+      pointer-events: none;  
+      transition: opacity 0.4s ease, transform 0.4s ease;  
+      z-index: 1000;  
+    }  
+    .toast.show {  
+      opacity: 1;  
+      transform: translateX(-50%) translateY(-10px);  
+    }  
+    .music-controls {
+      margin: 15px 0;
+      display: flex;
+      gap: 10px;
+    }
+    .music-btn {
+      background: #39ff14;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      color: #000;
+    }
+    .music-btn:hover { opacity: 0.8; transform: scale(1.05); }
+  </style>  
+</head>  
+<body>  
+  <h1>King Zamss Product</h1>  
+  <img src="https://files.catbox.moe/ajwzb1.png" class="thumbnail" alt="Logo King Zamss Product"/>  
+  <div class="note">𝖠𝗅𝗅 𝖯𝗋𝗈𝖽𝗎𝖼𝗍𝗂𝗈𝗇𝗌 𝖡𝗒 King Zamss</div>  
+  <hr/>  
+
+  <!-- Musik autoplay -->
+  <audio id="bg-music" autoplay loop>
+    <source src="https://files.catbox.moe/16clya.mp3" type="audio/mpeg">
+  </audio>
+  <div class="music-controls">
+    <button class="music-btn" onclick="playMusic()">▶ Play</button>
+    <button class="music-btn" onclick="pauseMusic()">⏸ Pause</button>
+  </div>
+
+  <!-- Produk Lengkap -->  
+  <div class="product-list">
+
+    <!-- Nika -->
+    <div class="product-card" onclick="toggleDetail(this)">
+      <img src="https://file.garden/aPYbHMuJq1grMOzq/photo_2025-10-20_18-51-39.jpg" class="product-image" alt="PT BIASA"/>
+      <div class="product-title">HOSTING</div>
+      <div class="price">Rp1.000</div>
+      <div class="hint">Tap untuk lihat detail</div>
+      <div class="product-detail">
+MENYEDIAKAN HOASTING
+𝟏𝐆𝐁 𝟏𝐊
+𝟐𝐆𝐁 𝟐𝐊
+𝟑𝐆𝐁 𝟑𝐊
+𝟒𝐆𝐁 𝟒𝐊
+𝟓𝐆𝐁 𝟓𝐊
+𝟔𝐆𝐁 𝟔𝐊
+𝟕𝐆𝐁 𝟕𝐊
+𝟖𝐆𝐁 𝟖𝐊
+𝟗𝐆𝐁 𝟗𝐊
+𝐔𝐍𝐋𝐈 𝟏𝟎𝐊
+𝐀𝐃𝐏 𝟏𝟓𝐊
+      </div>
+    </div>
+
+    <!-- Sasuke -->
+    <div class="product-card" onclick="toggleDetail(this)">  
+      <img src="https://file.garden/aPYbHMuJq1grMOzq/photo_2025-10-20_18-51-07.jpg" class="product-image" alt="Kebutuhan Hosting"/>  
+      <div class="product-title">UNBAND & JABATAN PANEL</div>  
+      <div class="price">Rp10.000</div>  
+      <div class="hint">Tap untuk lihat detail</div>  
+      <div class="product-detail">
+LIST PAID UNBAND BY ZAMSS
+🔰KENON SPAM🚫:𝟏𝟎𝐊
+🔰KENON PERMA FRESH🚫:𝟏𝟓𝐊
+🔰KENON PERMA BATU🗿:𝟐𝟎𝐊
+🔰KENON PERMA HARD🔥:𝟐𝟎𝐊
+🔰KENON PERMA LUMUT💀:𝟑𝟎𝐊
+
+
+LIST UP JABATAN 
+RESS UP KE ADP : 3K
+RESS UP PT : 6K 
+RESS UP OWN : 8K
+RESS UP TK : 12K
+RESS UP CEO : 15k
+      </div>
+    </div>
+
+
+  </div>
+
+  <footer class="contact-section">
+      <h2>All Payment</h2>
+      <div class="contact-links">
+        <a href="https://file.garden/aPYbHMuJq1grMOzq/photo_2025-10-20_17-51-04%20qris%20-%20Copy.jpg" target="_blank" class="contact-btn qris">
+          <img src="https://img.icons8.com/ios-filled/50/ffffff/qr-code.png"/> QRIS
+        </a>
+        <a href="javascript:void(0)" onclick="copyToClipboard('085819355761')" class="contact-btn dana">
+          <img src="https://img.icons8.com/ios-filled/50/ffffff/wallet-app.png"/> DANA
+        </a>
+      </div>
+
+      <h2 style="margin-top:30px;">Contacts King Zamss</h2>
+      <div class="contact-links">
+        <a href="https://t.me/Bupakzs" target="_blank" class="contact-btn telegram">
+          <img src="https://img.icons8.com/ios-filled/50/ffffff/telegram-app.png"/> Telegram
+        </a>
+        <a href="https://wa.me/6288709699657" target="_blank" class="contact-btn whatsapp">
+          <img src="https://img.icons8.com/ios-filled/50/ffffff/whatsapp.png"/> WhatsApp
+        </a>
+      </div>
+
+      <p class="note" style="margin-top:12px;">Created By King Zamss</p>
+    </footer>
+
+    <div id="toast" class="toast">Tersalin!</div>
+  </div>
+
+   <script>
+    function toggleDetail(card){ card.classList.toggle("active"); }
+
+    function copyToClipboard(text){
+      if(navigator.clipboard && window.isSecureContext){
+        navigator.clipboard.writeText(text).then(()=>{showToast("Nomor "+text+" berhasil disalin!");})
+        .catch(()=>{fallbackCopy(text);});
+      } else { fallbackCopy(text); }
+    }
+
+    function fallbackCopy(text){
+      const textarea=document.createElement("textarea");
+      textarea.value=text;textarea.style.position="fixed";textarea.style.left="-9999px";
+      document.body.appendChild(textarea);textarea.focus();textarea.select();
+      try{document.execCommand("copy");showToast("Nomor "+text+" berhasil disalin!");}
+      catch(err){alert("Gagal menyalin");}
+      document.body.removeChild(textarea);
+    }
+
+    function showToast(message){
+      const toast=document.getElementById("toast");
+      toast.textContent=message;
+      toast.classList.add("show");
+      setTimeout(()=>{toast.classList.remove("show");},2000);
+    }
+
+    function playMusic(){ document.getElementById("bg-music").play(); }
+    function pauseMusic(){ document.getElementById("bg-music").pause(); }
+  </script>
+</body>
+</html>
